@@ -26,7 +26,7 @@ services:
       DEMO_MODE: "true"
       DEMO_SEED: "true"
       MAX_UPDATE_MODE: ${MAX_UPDATE_MODE:-webhook}
-      CORS_ORIGINS: http://localhost:8080,http://localhost:5173
+      CORS_ORIGINS: https://compute-vm-2-4-30-ssd-1790500105520.taile1d37a.ts.net,http://localhost:8080,http://localhost:5173
     command: ["python", "-m", "app.web.start"]
     ports:
       - "8000:8000"
