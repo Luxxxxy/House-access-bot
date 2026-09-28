@@ -1,0 +1,20 @@
+"""Состояния заполнения формы визита."""
+
+from enum import StrEnum
+
+
+class VisitForm(StrEnum):
+    WAITING_GUEST_NAME = "WAITING_GUEST_NAME"
+    WAITING_APARTMENT = "WAITING_APARTMENT"
+    WAITING_PURPOSE = "WAITING_PURPOSE"
+    WAITING_CONFIRM = "WAITING_CONFIRM"
+
+
+class GuardDecision(StrEnum):
+    WAITING_REJECT_COMMENT = "WAITING_REJECT_COMMENT"
+    WAITING_VISIT_ID = "WAITING_VISIT_ID"
+
+
+class AdminForm(StrEnum):
+    WAITING_ADMIN_CODE = "WAITING_ADMIN_CODE"
+    WAITING_GUARD_CODE = "WAITING_GUARD_CODE"

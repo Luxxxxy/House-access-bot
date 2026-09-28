@@ -1,0 +1,118 @@
+version: "1.0"
+solution:
+  name: "Безопасный проход"
+  id: "house-access-bot"
+
+api:
+  base_url: "https://compute-vm-2-4-30-ssd-1790500105520.taile1d37a.ts.net"
+  format: "OpenAPI 3.1"
+
+checks:
+  - id: "resident-apartments"
+    name: "Получение квартир жителя"
+    role: "RESIDENT"
+    method: "GET"
+    path: "/api/v1/resident/apartments"
+    parameters: []
+    expected:
+      status: 200
+      content_type: "application/json"
+
+  - id: "resident-checkpoints"
+    name: "Получение КПП"
+    role: "RESIDENT"
+    method: "GET"
+    path: "/api/v1/resident/checkpoints"
+    parameters:
+      - name: "apartment_id"
+        in: "query"
+        required: false
+        type: "uuid"
+    expected:
+      status: 200
+      content_type: "application/json"
+
+  - id: "create-visit-request"
+    name: "Создание заявки на посетителя"
+    role: "RESIDENT"
+    method: "POST"
+    path: "/api/v1/visit-requests"
+    request:
+      content_type: "application/json"
+      body:
+        apartment_id: "UUID квартиры"
+        checkpoint_id: "UUID КПП"
+        visitor_type: "GUEST"
+        visitor_name: "Иванов Иван Иванович"
+        visitor_car_number: null
+        resident_contact: null
+        estimated_arrival_at: null
+        comment: null
+    expected:
+      status: 201
+      content_type: "application/json"
+
+  - id: "guard-queue"
+    name: "Получение очереди охранника"
+    role: "GUARD"
+    method: "GET"
+    path: "/api/v1/guards/queue"
+    parameters:
+      - name: "q"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "limit"
+        in: "query"
+        required: false
+        type: "integer"
+      - name: "offset"
+        in: "query"
+        required: false
+        type: "integer"
+    expected:
+      status: 200
+      content_type: "application/json"
+
+  - id: "guard-request-detail"
+    name: "Просмотр заявки охранником"
+    role: "GUARD"
+    method: "GET"
+    path: "/api/v1/guards/{request_id}"
+    parameters:
+      - name: "request_id"
+        in: "path"
+        required: true
+        type: "uuid"
+    expected:
+      status: 200
+      content_type: "application/json"
+
+  - id: "guard-decision"
+    name: "Принятие решения по заявке"
+    role: "GUARD"
+    method: "POST"
+    path: "/api/v1/guards/{request_id}/decision"
+    parameters:
+      - name: "request_id"
+        in: "path"
+        required: true
+        type: "uuid"
+    request:
+      content_type: "application/json"
+      body:
+        status: "PASSED"
+        reason: null
+    expected:
+      status: 200
+      content_type: "application/json"
+
+  - id: "resident-notifications"
+    name: "Получение уведомлений жителя"
+    role: "RESIDENT"
+    method: "GET"
+    path: "/api/v1/notifications"
+    parameters: []
+    expected:
+      status: 200
+      content_type: "application/json"
